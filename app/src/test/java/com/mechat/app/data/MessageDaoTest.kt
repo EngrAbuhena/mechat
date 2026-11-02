@@ -12,11 +12,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 /**
  * DAO tests on an in-memory database. SQLCipher itself is exercised on-device with
  * the raw 32-byte test key; here we verify schema/DAO behaviour.
  */
+@RunWith(RobolectricTestRunner::class)
 class MessageDaoTest {
 
     private lateinit var db: MeChatDatabase
