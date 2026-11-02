@@ -4,23 +4,24 @@ kotlin = "2.1.0"
 ksp = "2.1.0-1.0.29"
 coreKtx = "1.15.0"
 lifecycleRuntimeKtx = "2.8.7"
+lifecycleProcess = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
+sqlite = "2.4.0"
 hilt = "2.54"
 navigationCompose = "2.8.5"
 lazysodium = "5.1.0"
 datastore = "1.1.1"
-lifecycleProcess = "2.8.7"
+room = "2.6.1"
+sqlcipher = "4.6.0"
 zxing = "3.5.3"
 camerax = "1.4.1"
-okhttp = "4.12.0"
-kotlinxSerialization = "1.7.3"
-coroutines = "1.9.0"
 webrtc = "1.0.32006"
 workmanager = "2.10.0"
 exifinterface = "1.4.0"
-room = "2.6.1"
-sqlcipher = "4.6.0"
+okhttp = "4.12.0"
+kotlinxSerialization = "1.7.3"
+coroutines = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,21 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 lazysodium-android = { group = "com.goterl.lazysodium", name = "lazysodium-android", version.ref = "lazysodium" }
 lazysodium-java = { group = "com.goterl.lazysodium", name = "lazysodium-java", version.ref = "lazysodium" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+sqlcipher = { group = "net.zetetic", name = "sqlcipher-android", version.ref = "sqlcipher" }
+sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqlite" }
+zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
+webrtc = { group = "org.webrtc", name = "google-webrtc", version.ref = "webrtc" }
+workmanager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workmanager" }
+exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -47,13 +63,3 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt-android-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
-camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
-camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
-camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
-webrtc = { group = "org.webrtc", name = "google-webrtc", version.ref = "webrtc" }
-workmanager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workmanager" }
-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
