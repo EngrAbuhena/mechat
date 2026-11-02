@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "node --test test/"
+    "test": "node --test --test-force-exit test/"
   },
   "dependencies": {
     "ws": "^8.18.0"
