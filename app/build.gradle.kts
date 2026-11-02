@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,7 +20,7 @@ android {
 
         // ICE servers from local.properties / CI secrets — NEVER hard-coded (RULE 4).
         // e.g. in local.properties: MECHTURN_URL=turns:relay.example.org:443, MECHTURN_USER=..., MECHTURN_CRED=...
-        val props = java.util.Properties().apply {
+        val props = Properties().apply {
             val f = rootProject.file("local.properties")
             if (f.exists()) f.inputStream().use { load(it) }
         }
@@ -35,7 +36,7 @@ android {
     // NEVER commit the keystore or passwords (RULE 4).
     signingConfigs {
         create("release") {
-            val props = java.util.Properties().apply {
+            val props = Properties().apply {
                 val f = gradle.gradleUserHomeDir.resolve("gradle.properties")
                 if (f.exists()) f.inputStream().use { load(it) }
             }
