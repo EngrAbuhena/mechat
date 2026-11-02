@@ -21,6 +21,7 @@ workmanager = "2.10.0"
 exifinterface = "1.4.0"
 room = "2.6.1"
 sqlcipher = "4.6.0"
+sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version = "2.4.0" }
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 sqlcipher = { group = "net.zetetic", name = "android-database-sqlcipher", version.ref = "sqlcipher" }\nsqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version = "2.4.0" }
+sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version = "2.4.0" }
 robolectric = { group = "org.robolectric", name = "robolectric", version = "4.14.1" }
 
 [plugins]
