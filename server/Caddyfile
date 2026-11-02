@@ -1,0 +1,6 @@
+# Caddy terminates TLS (Let's Encrypt) and proxies wss:// to the relay container.
+# Domain comes from the environment — nothing hard-coded.
+{$SERVER_DOMAIN} {
+    reverse_proxy /ws relay:8080
+    reverse_proxy / relay:8080
+}

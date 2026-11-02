@@ -1,0 +1,25 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - uses: android-actions/setup-android@v3
+      - name: Build release
+        env:
+          MECHAT_KEYSTORE: ${{ secrets.MECHAT_KEYSTORE_B64 }}
+          MECHAT_KEYSTORE_PASSWORD: ${{ secrets.MECHAT_KEYSTORE_PASSWORD }}
+          MECHAT_KEY_ALIAS: ${{ secrets.MECHAT_KEY_ALIAS }}
+          MECHAT_KEY_PASSWORD: ${{ secrets.MECHAT_KEY_PASSWORD }}
+        run: ./gradlew bundleRelease assembleRelease
+      - name: SHA-256
+        run: sha256sum app/build/outputs/apk/release/app-release.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: app/build/outputs/**/release/*

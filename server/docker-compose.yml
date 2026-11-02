@@ -1,0 +1,40 @@
+# MeChat server stack: relay (wss via Caddy) + coturn TURN with TLS.
+# All values come from .env — never hard-coded. See docs/server.md.
+services:
+  relay:
+    build: .
+    env_file: .env
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    env_file: .env
+    restart: unless-stopped
+
+  coturn:
+    image: coturn/coturn:latest
+    command: >
+      -n --log-file=stdout
+      --realm=${TURN_REALM}
+      --tls-listening-port=5349
+      --cert=/certs/fullchain.pem --pkey=/certs/privkey.pem
+      --no-cli
+    env_file: .env
+    ports:
+      - "5349:5349/tcp"
+      - "5349:5349/udp"
+    volumes:
+      - ${TLS_CERT_DIR}:/certs:ro
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

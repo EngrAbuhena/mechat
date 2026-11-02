@@ -1,0 +1,41 @@
+# ---- Android / Gradle ----
+.gradle/
+build/
+out/
+Captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+*.iml
+.idea/
+.navigation/
+.DS_Store
+
+# Android Studio
+*.iws
+*.ipr
+*.iwc
+
+# Keystores / secrets — never commit (RULE 4)
+*.jks
+*.keystore
+*.p12
+*.pem
+keystore.properties
+
+# Build artifacts — never commit
+*.apk
+*.aab
+*.aar
+
+# ---- Node / server ----
+node_modules/
+dist/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env
+.env.local
+.env.*.local
