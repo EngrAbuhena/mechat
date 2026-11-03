@@ -13,14 +13,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Switch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.getValue\nimport androidx.compose.runtime.mutableStateOf\nimport androidx.compose.runtime.remember\nimport androidx.compose.runtime.setValue
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.mechat.app.di.LockEntryPoint
 import dagger.hilt.android.EntryPointAccessors
-import com.mechat.app.ui.components.GlassCard\nimport com.mechat.app.ui.components.GlassField
+import com.mechat.app.ui.components.GlassCard
+import com.mechat.app.ui.components.GlassField
 import com.mechat.app.ui.components.GradientBackground
 import com.mechat.app.ui.components.ListItem
 import com.mechat.app.ui.theme.LocalMeChatTokens
