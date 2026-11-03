@@ -1,9 +1,8 @@
 package com.mechat.app.crypto
 
-import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
 import com.goterl.lazysodium.interfaces.PwHash
+import com.sun.jna.NativeLong
 import java.security.MessageDigest
 import java.security.SecureRandom
 
@@ -12,7 +11,7 @@ import java.security.SecureRandom
  * Random per-install salt; only hash + salt + parameters are stored.
  * Verification uses a constant-time comparison.
  */
-class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid(SodiumAndroid())) {
+class PinHasher(private val sodium: SodiumAndroid = SodiumAndroid()) {
 
     companion object {
         const val HASH_BYTES = 32
@@ -29,7 +28,7 @@ class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goter
         val salt: ByteArray,
         val opsLimit: Long = OPS_LIMIT,
         val memLimit: Long = MEM_LIMIT,
-        val algorithm: Int = Pwhash.ALG_ARGON2ID13,
+        val algorithm: Int = PwHash.ALG_ARGON2ID13,
     )
 
     fun isValidPinLength(pin: String): Boolean =
@@ -38,8 +37,10 @@ class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goter
     fun hash(pin: String): PinHash {
         require(isValidPinLength(pin))
         val salt = ByteArray(SALT_BYTES).also { SecureRandom().nextBytes(it) }
-        val hash = sodium.cryptoPwhash(
-            HASH_BYTES, pin.toByteArray(), salt, OPS_LIMIT, MEM_LIMIT, Pwhash.ALG_ARGON2ID13,
+        val hash = ByteArray(HASH_BYTES)
+        sodium.crypto_pwhash(
+            hash, HASH_BYTES.toLong(), pin.toByteArray(), pin.length.toLong(), salt,
+            OPS_LIMIT, NativeLong(MEM_LIMIT), PwHash.ALG_ARGON2ID13,
         )
         return PinHash(hash, salt)
     }
@@ -47,9 +48,10 @@ class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goter
     /** Constant-time verification. */
     fun verify(pin: String, stored: PinHash): Boolean {
         if (!isValidPinLength(pin)) return false
-        val candidate = sodium.cryptoPwhash(
-            stored.hash.size, pin.toByteArray(), stored.salt,
-            stored.opsLimit, stored.memLimit, stored.algorithm,
+        val candidate = ByteArray(stored.hash.size)
+        sodium.crypto_pwhash(
+            candidate, stored.hash.size.toLong(), pin.toByteArray(), pin.length.toLong(),
+            stored.salt, stored.opsLimit, NativeLong(stored.memLimit), stored.algorithm,
         )
         return MessageDigest.isEqual(candidate, stored.hash)
     }
