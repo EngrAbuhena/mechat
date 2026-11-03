@@ -1,7 +1,7 @@
 package com.mechat.app.crypto.ratchet
 
 import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.SodiumAndroid
+import com.goterl.lazysodium.LazySodiumAndroid
 import java.security.SecureRandom
 
 /**
@@ -15,7 +15,7 @@ import java.security.SecureRandom
  *   shared = HKDF( x25519(ourIdentityPriv, theirSpk) || x25519(ourRatchetPriv, theirSpk) || x25519(ourIdentityPriv, theirKx) )
  */
 class DoubleRatchet(
-    private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.SodiumAndroid(),
+    private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid(),
 ) {
     companion object {
         const val VERSION: Byte = 1

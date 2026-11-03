@@ -1,7 +1,7 @@
 package com.mechat.app.domain.invite
 
 import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.SodiumAndroid
+import com.goterl.lazysodium.LazySodiumAndroid
 import java.security.SecureRandom
 import java.util.Base64
 
@@ -27,7 +27,7 @@ object InviteCodec {
     private fun unb64(s: String) = Base64.getUrlDecoder().decode(s)
 
     fun create(
-        sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.SodiumAndroid(),
+        sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid(),
         signingKeyPair: com.goterl.lazysodium.utils.KeyPair,
         keyAgreementPublicKey: ByteArray,
         relayAddress: String,

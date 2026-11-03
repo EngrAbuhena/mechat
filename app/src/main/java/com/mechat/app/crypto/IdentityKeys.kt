@@ -1,7 +1,7 @@
 package com.mechat.app.crypto
 
 import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.SodiumAndroid
+import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.utils.KeyPair
 
 /**
@@ -10,7 +10,7 @@ import com.goterl.lazysodium.utils.KeyPair
  * Private keys live only in memory here; at rest they are wrapped by
  * [KeystoreKeyProvider] and never stored unencrypted (RULE 4).
  */
-class IdentityKeys(private val sodium: SodiumAndroid = com.goterl.lazysodium.SodiumAndroid()) {
+class IdentityKeys(private val sodium: LazySodiumAndroid = com.goterl.lazysodium.LazySodiumAndroid()) {
 
     init {
     }

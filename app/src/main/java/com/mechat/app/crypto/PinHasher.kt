@@ -1,7 +1,7 @@
 package com.mechat.app.crypto
 
 import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.SodiumAndroid
+import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.interfaces.Pwhash
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -11,7 +11,7 @@ import java.security.SecureRandom
  * Random per-install salt; only hash + salt + parameters are stored.
  * Verification uses a constant-time comparison.
  */
-class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.SodiumAndroid()) {
+class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid()) {
 
     companion object {
         const val HASH_BYTES = 32
