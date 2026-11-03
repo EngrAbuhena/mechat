@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.goterl.lazysodium.LazySodiumAndroid
+import com.goterl.lazysodium.LazySodiumAndroid\nimport com.goterl.lazysodium.SodiumAndroid\nimport com.goterl.lazysodium.SodiumAndroid
+import com.goterl.lazysodium.SodiumAndroid
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -22,7 +23,7 @@ private val Context.invitePrefs by preferencesDataStore(name = "mechat_invites")
 class InviteManager @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
-    private val sodium = LazySodiumAndroid()
+    private val sodium = LazySodiumAndroid(SodiumAndroid())
     private val usedKey = stringPreferencesKey("used_tokens_v1")
 
     fun createInvite(
