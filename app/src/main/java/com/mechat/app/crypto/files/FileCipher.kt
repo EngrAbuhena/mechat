@@ -1,6 +1,5 @@
 package com.mechat.app.crypto.files
 
-import com.goterl.lazysodium.Sodium
 import com.goterl.lazysodium.SodiumAndroid
 import java.security.SecureRandom
 
@@ -23,7 +22,7 @@ object FileCipher {
         return n
     }
 
-    fun encrypt(sodium: Sodium, key: ByteArray, plaintext: ByteArray): ByteArray {
+    fun encrypt(sodium: SodiumAndroid, key: ByteArray, plaintext: ByteArray): ByteArray {
         val chunkCount = (plaintext.size + CHUNK_SIZE - 1) / CHUNK_SIZE
         val out = ByteArray(8)
         MAGIC.copyInto(out, 0)
@@ -35,22 +34,28 @@ object FileCipher {
             val pt = plaintext.copyOfRange(from, to)
             val nonce = chunkNonce(i)
             val ct = ByteArray(pt.size + 16)
-            sodium.cryptoAeadXchacha20poly1305IetfEncrypt(ct, null, pt, null, null, null, nonce, key)
+            val cLen = longArrayOf(0)
+            sodium.crypto_aead_xchacha20poly1305_ietf_encrypt(
+                ct, cLen, pt, pt.size.toLong(), null, 0, null, nonce, key,
+            )
             chunks += nonce + ct
         }
         return out + chunks.reduce { a, b -> a + b }
     }
 
     /** Decrypts one chunk; throws on AEAD tag mismatch (corruption detection). */
-    fun decryptChunk(sodium: Sodium, key: ByteArray, nonce: ByteArray, ct: ByteArray): ByteArray {
+    fun decryptChunk(sodium: SodiumAndroid, key: ByteArray, nonce: ByteArray, ct: ByteArray): ByteArray {
         val pt = ByteArray(ct.size - 16)
-        val rc = sodium.cryptoAeadXchacha20poly1305IetfDecrypt(pt, null, null, ct, null, null, nonce, key)
+        val mLen = longArrayOf(0)
+        val rc = sodium.crypto_aead_xchacha20poly1305_ietf_decrypt(
+            pt, mLen, null, ct, ct.size.toLong(), null, 0, nonce, key,
+        )
         if (rc != 0) throw SecurityException("chunk AEAD tag mismatch — corrupted file")
         return pt
     }
 
-    fun decrypt(sodium: Sodium, key: ByteArray, blob: ByteArray): ByteArray {
-        require(blob.size >= 8 && blob.copyOfRange(0, 4).contentEquals(MAGIC)) { "bad magic" }
+    fun decrypt(sodium: SodiumAndroid, key: ByteArray, blob: ByteArray): ByteArray {
+        require(blob.size >= 8 && blob.copyOfRange(0, 4).contentEquals(MAGIC)) { "bad file format" }
         val chunkCount = java.nio.ByteBuffer.wrap(blob, 4, 4).int
         val out = ArrayList<ByteArray>()
         var pos = 8
