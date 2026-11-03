@@ -1,7 +1,5 @@
 package com.mechat.app.crypto.ratchet
 
-import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
 import java.security.SecureRandom
 
@@ -10,13 +8,9 @@ import java.security.SecureRandom
  *  - DH ratchet: X25519 (crypto_scalarmult)
  *  - KDF: HKDF-SHA256 over HMAC-SHA256
  *  - AEAD: XChaCha20-Poly1305 (crypto_aead_xchacha20poly1305_ietf), unique 24-byte nonce per message
- *  - Signatures: Ed25519 over the envelope
- *
- * Session setup (X3DH-style, from the invite's two public keys):
- *   shared = HKDF( x25519(ourIdentityPriv, theirSpk) || x25519(ourRatchetPriv, theirSpk) || x25519(ourIdentityPriv, theirKx) )
  */
-class DoubleRatchet(
-    private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid(SodiumAndroid()),
+nclass DoubleRatchet(
+    private val sodium: SodiumAndroid = SodiumAndroid(),
 ) {
     companion object {
         const val VERSION: Byte = 1
@@ -25,37 +19,37 @@ class DoubleRatchet(
 
     private val random = SecureRandom()
 
-    // Our keys
     var identityPriv: ByteArray? = null
     var identityPub: ByteArray? = null
     private var ratchetPriv = ByteArray(32).also { random.nextBytes(it) }
     private var ratchetPub = ByteArray(32)
 
-    // Their public keys
     private var theirSpk: ByteArray? = null
     private var theirKx: ByteArray? = null
 
-    // Ratchet state
     private var rootKey = ByteArray(32)
     private var sendChainKey: ByteArray? = null
     private var recvChainKey: ByteArray? = null
     private var sendSeq = 0L
     private var recvSeq = 0L
-    private val skipped = HashMap<Pair<ByteArray, Long>, ByteArray>() // (ratchetPub, seq) -> msgKey
+    private val skipped = HashMap<Pair<ByteArray, Long>, ByteArray>()
 
     init {
         ratchetPub = x25519Pub(ratchetPriv)
     }
 
     private fun x25519Pub(priv: ByteArray): ByteArray {
-        // crypto_scalarmult_base
-        return ByteArray(32).also { sodium.cryptoScalarmultBase(it, priv) }
+        val q = ByteArray(32)
+        sodium.crypto_scalarmult_base(q, priv)
+        return q
     }
 
-    private fun dh(priv: ByteArray, pub: ByteArray): ByteArray =
-        ByteArray(32).also { sodium.cryptoScalarmult(it, priv, pub) }
+    private fun dh(priv: ByteArray, pub: ByteArray): ByteArray {
+        val q = ByteArray(32)
+        sodium.crypto_scalarmult(q, priv, pub)
+        return q
+    }
 
-    /** X3DH-style session init from the invite's exchanged public keys. */
     fun initSession(
         ourIdentityPriv: ByteArray, ourIdentityPub: ByteArray,
         theirSigningPub: ByteArray, theirKeyAgreementPub: ByteArray,
@@ -68,13 +62,11 @@ class DoubleRatchet(
         val dh2 = dh(ratchetPriv, theirSpk!!)
         val dh3 = dh(ourIdentityPriv, theirKx!!)
         rootKey = Hkdf.derive(ByteArray(32), dh1 + dh2 + dh3, "mechat-root".toByteArray())
-        // Alice side: derive initial send chain.
         val (rk, ck) = hkdfRk(rootKey, dh(ratchetPriv, theirKx!!))
         rootKey = rk
         sendChainKey = ck
     }
 
-    /** Bob side: initial receive chain derived from the same DH. */
     fun initSessionResponder(
         ourIdentityPriv: ByteArray, ourIdentityPub: ByteArray,
         theirSigningPub: ByteArray, theirKeyAgreementPub: ByteArray,
@@ -103,11 +95,9 @@ class DoubleRatchet(
         return mk to sendSeq++
     }
 
-    /** Encrypt: returns (envelope fields). Unique nonce per message. */
     fun encrypt(plaintext: ByteArray): ByteArray {
         val (mk, seq) = nextSendMessageKey()
         val nonce = ByteArray(24).also { random.nextBytes(it) }
-        // header: version(1) || ratchetPub(32) || seq(8) || nonce(24)
         val header = ByteArray(1 + 32 + 8 + 24)
         header[0] = VERSION
         ratchetPub.copyInto(header, 1)
@@ -117,7 +107,6 @@ class DoubleRatchet(
         return header + ciphertext
     }
 
-    /** Decrypt with replay protection + out-of-order (skipped-key) handling. */
     fun decrypt(envelope: ByteArray): ByteArray {
         require(envelope.size > 65) { "envelope too short" }
         require(envelope[0] == VERSION) { "unsupported version" }
@@ -127,19 +116,16 @@ class DoubleRatchet(
         val header = envelope.copyOfRange(0, 65)
         val ciphertext = envelope.copyOfRange(65, envelope.size)
 
-        // Skipped message key?
         skipped.remove(theirRatchetPub to seq)?.let {
             return aeadDecrypt(it, nonce, header, ciphertext)
         }
 
         if (!theirRatchetPub.contentEquals(ratchetPub)) {
-            // New ratchet key: ratchet receive chain, store skipped keys for the old chain.
             ratchetRecv(theirRatchetPub)
         }
         if (seq < recvSeq) throw SecurityException("replay: old sequence number")
-        // Skip ahead, storing intermediate keys (out-of-order support, bounded by MAX_SKIP).
         while (recvSeq < seq) {
-            if (recvSeq - seq > MAX_SKIP || seq - recvSeq > MAX_SKIP) throw SecurityException("too far ahead")
+            if (seq - recvSeq > MAX_SKIP) throw SecurityException("too far ahead")
             val mk = Hkdf.derive(recvChainKey!!, "mechat-msg".toByteArray())
             skipped[theirRatchetPub to recvSeq] = mk
             recvChainKey = Hkdf.derive(recvChainKey!!, "mechat-chain".toByteArray())
@@ -156,7 +142,6 @@ class DoubleRatchet(
         rootKey = rk
         recvChainKey = ck
         recvSeq = 0
-        // New send chain on next encrypt.
         val (rk2, ck2) = hkdfRk(rootKey, dh(ratchetPriv, theirNewPub))
         rootKey = rk2
         sendChainKey = ck2
@@ -167,16 +152,18 @@ class DoubleRatchet(
 
     private fun aeadEncrypt(key: ByteArray, nonce: ByteArray, aad: ByteArray, pt: ByteArray): ByteArray {
         val out = ByteArray(pt.size + 16)
-        sodium.cryptoAeadXchacha20poly1305IetfEncrypt(
-            out, null, pt, null, aad, null, nonce, key,
+        val cLen = longArrayOf(0)
+        sodium.crypto_aead_xchacha20poly1305_ietf_encrypt(
+            out, cLen, pt, pt.size.toLong(), aad, aad.size.toLong(), null, nonce, key,
         )
         return out
     }
 
     private fun aeadDecrypt(key: ByteArray, nonce: ByteArray, aad: ByteArray, ct: ByteArray): ByteArray {
         val out = ByteArray(ct.size - 16)
-        val rc = sodium.cryptoAeadXchacha20poly1305IetfDecrypt(
-            out, null, null, ct, aad, null, nonce, key,
+        val mLen = longArrayOf(0)
+        val rc = sodium.crypto_aead_xchacha20poly1305_ietf_decrypt(
+            out, mLen, null, ct, ct.size.toLong(), aad, aad.size.toLong(), nonce, key,
         )
         if (rc != 0) throw SecurityException("AEAD tag mismatch — tampering or wrong key")
         return out
