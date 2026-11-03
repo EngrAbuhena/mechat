@@ -15,7 +15,7 @@ import java.security.SecureRandom
  *   shared = HKDF( x25519(ourIdentityPriv, theirSpk) || x25519(ourRatchetPriv, theirSpk) || x25519(ourIdentityPriv, theirKx) )
  */
 class DoubleRatchet(
-    private val sodium: com.goterl.lazysodium.LazySodium = SodiumAndroid(),
+    private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodium(SodiumAndroid()),
 ) {
     companion object {
         const val VERSION: Byte = 1
