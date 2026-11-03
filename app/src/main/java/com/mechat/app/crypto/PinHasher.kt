@@ -11,7 +11,7 @@ import java.security.SecureRandom
  * Random per-install salt; only hash + salt + parameters are stored.
  * Verification uses a constant-time comparison.
  */
-class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodium(SodiumAndroid())) {
+class PinHasher(private val sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.SodiumAndroid()) {
 
     companion object {
         const val HASH_BYTES = 32

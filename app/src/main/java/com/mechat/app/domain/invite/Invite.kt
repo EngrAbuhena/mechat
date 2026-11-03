@@ -27,7 +27,7 @@ object InviteCodec {
     private fun unb64(s: String) = Base64.getUrlDecoder().decode(s)
 
     fun create(
-        sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodium(SodiumAndroid()),
+        sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.SodiumAndroid(),
         signingKeyPair: com.goterl.lazysodium.utils.KeyPair,
         keyAgreementPublicKey: ByteArray,
         relayAddress: String,
