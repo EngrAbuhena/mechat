@@ -46,7 +46,7 @@ object InviteCodec {
         val payload = encodePayload(invite)
         val sig = ByteArray(64)
         val payloadBytes = payload.toByteArray()
-        sodium.crypto_sign_detached(sig, longArrayOf(0), payloadBytes, payloadBytes.size.toLong(), signingKeyPair.secretKey.asBytes)
+        sodium.crypto_sign_detached(sig, null, payloadBytes, payloadBytes.size.toLong(), signingKeyPair.secretKey.asBytes)
         return invite to "$PREFIX.$payload.${b64(sig)}"
     }
 
