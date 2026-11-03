@@ -26,7 +26,7 @@ object DatabaseModule {
         // 32-byte key (SupportFactory with ByteArray = PRAGMA key "x'<hex>'", no KDF).
         val rawKey = keyProvider.getOrCreateRawKey()
         return Room.databaseBuilder(context, MeChatDatabase::class.java, "mechat.db")
-            .openHelperFactory(SupportFactory(rawKey))
+            .openHelperFactory(SupportOpenHelperFactory(rawKey))
             .fallbackToDestructiveMigration(true)
             .build()
     }
