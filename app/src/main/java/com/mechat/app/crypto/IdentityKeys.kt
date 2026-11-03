@@ -17,7 +17,7 @@ class IdentityKeys(private val sodium: SodiumAndroid = SodiumAndroid()) {
         val pk = ByteArray(32)
         val sk = ByteArray(64)
         sodium.crypto_sign_keypair(pk, sk)
-        return KeyPair(Key(pk), Key(sk))
+        return KeyPair(Key.fromBytes(pk), Key.fromBytes(sk))
     }
 
     /** X25519 key pair for key agreement (crypto_box / X3DH-style). */
@@ -25,7 +25,7 @@ class IdentityKeys(private val sodium: SodiumAndroid = SodiumAndroid()) {
         val pk = ByteArray(32)
         val sk = ByteArray(32)
         sodium.crypto_box_keypair(pk, sk)
-        return KeyPair(Key(pk), Key(sk))
+        return KeyPair(Key.fromBytes(pk), Key.fromBytes(sk))
     }
 
     /** Public identity ID: base64url(SHA-256(signing public key)), no padding. */
