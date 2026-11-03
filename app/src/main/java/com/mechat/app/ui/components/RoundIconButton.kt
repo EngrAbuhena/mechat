@@ -16,7 +16,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import com.mechat.app.ui.theme.LocalMeChatTokens
 import com.mechat.app.ui.theme.MeChatTheme
-import com.mechat.app.ui.theme.Sizes\nimport com.mechat.app.ui.theme.Spacing
+import com.mechat.app.ui.theme.Sizes
+import com.mechat.app.ui.theme.Spacing
 
 /** Circular icon button, >= 48dp touch target, content description required. */
 @Composable

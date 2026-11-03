@@ -2,7 +2,8 @@ package com.mechat.app.domain.lock
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey\nimport androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -31,7 +32,10 @@ enum class LockDelay(val ms: Long) {
  * survive app restarts. PIN-only by design — no biometrics (see docs).
  */
 @Singleton
-private const val AUTO_WIPE_THRESHOLD = 10\n\n@Singleton\nclass AppLockManager @Inject constructor(
+private const val AUTO_WIPE_THRESHOLD = 10
+
+@Singleton
+class AppLockManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val pinHasher: com.mechat.app.crypto.PinHasher,
 ) {
@@ -39,7 +43,10 @@ private const val AUTO_WIPE_THRESHOLD = 10\n\n@Singleton\nclass AppLockManager @
     private val pinSaltKey = stringPreferencesKey("pin_salt_v1")
     private val failuresKey = intPreferencesKey("lock_failures")
     private val lockoutUntilKey = longPreferencesKey("lockout_until")
-    private val delayKey = intPreferencesKey("lock_delay_ordinal")\n    private val panicHashKey = stringPreferencesKey("panic_hash_v1")\n    private val panicSaltKey = stringPreferencesKey("panic_salt_v1")\n    private val autoWipeKey = booleanPreferencesKey("auto_wipe_enabled")
+    private val delayKey = intPreferencesKey("lock_delay_ordinal")
+    private val panicHashKey = stringPreferencesKey("panic_hash_v1")
+    private val panicSaltKey = stringPreferencesKey("panic_salt_v1")
+    private val autoWipeKey = booleanPreferencesKey("auto_wipe_enabled")
 
     private val _locked = MutableStateFlow(true)
     val locked: StateFlow<Boolean> = _locked

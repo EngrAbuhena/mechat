@@ -1,7 +1,8 @@
 package com.mechat.app.network.protocol
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json\nimport kotlinx.serialization.serializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 /**
  * Typed wire protocol (kotlinx.serialization). All payloads are opaque to the
