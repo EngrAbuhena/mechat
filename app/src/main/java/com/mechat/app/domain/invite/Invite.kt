@@ -72,7 +72,7 @@ object InviteCodec {
         val spk = payload.copyOfRange(0, 32)
         if (sodium.crypto_sign_verify_detached(sig, payload, payload.size.toLong(), spk) != 0) return null
         if (trustedSigningKey != null && !spk.contentEquals(trustedSigningKey)) return null
-        val relay = String(payload, 88)
+        val relay = String(payload, 88, payload.size - 88, Charsets.UTF_8)
         return Invite(
             signingPublicKey = spk,
             keyAgreementPublicKey = payload.copyOfRange(32, 64),
