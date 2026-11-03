@@ -200,5 +200,5 @@ private fun ConversationRow(
 @Preview(showBackground = true)
 @Composable
 private fun ChatListScreenPreview() {
-    MeChatTheme { ChatListScreen({}, {}, {}) }
+    MeChatTheme { ChatListScreen({}, {}, {}, {}) }
 }

@@ -100,7 +100,7 @@ fun MeChatNavHost(navController: NavHostController) {
             SettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(NavRoutes.Call, enterTransition = { fadeIn }, exitTransition = { fadeOut }) {
-            CallScreen(onEndCall = { navController.popBackStack() })
+            CallScreen(onEnd = { navController.popBackStack() })
         }
     }
 }

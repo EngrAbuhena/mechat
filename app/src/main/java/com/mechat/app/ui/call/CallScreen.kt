@@ -14,7 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CallEnd
-import androidx.compose.material.icons.filled.CameraSwitch
+import androidx.compose.material.icons.filled.FlipCameraAndroid
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.VolumeUp
@@ -105,7 +105,7 @@ fun CallScreen(
                         containerColor = tokens.glassSurface,
                     )
                     if (isVideo) {
-                        RoundIconButton(Icons.Default.CameraSwitch, "Switch camera", {}, containerColor = tokens.glassSurface)
+                        RoundIconButton(Icons.Default.FlipCameraAndroid, "Switch camera", {}, containerColor = tokens.glassSurface)
                     }
                 }
             }

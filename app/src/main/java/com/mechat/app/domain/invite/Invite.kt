@@ -44,7 +44,9 @@ object InviteCodec {
             expiresAt = now + ttlMs,
         )
         val payload = encodePayload(invite)
-        val sig = sodium.cryptoSignDetached(payload, signingKeyPair.secretKey.asBytes)
+        val sig = ByteArray(64)
+        val payloadBytes = payload.toByteArray()
+        sodium.crypto_sign_detached(sig, longArrayOf(0), payloadBytes, payloadBytes.size.toLong(), signingKeyPair.secretKey.asBytes)
         return invite to "$PREFIX.$payload.${b64(sig)}"
     }
 
@@ -68,7 +70,7 @@ object InviteCodec {
         if (payload.size < 88) return null
         val sig = try { unb64(parts[2]) } catch (e: Exception) { return null }
         val spk = payload.copyOfRange(0, 32)
-        if (!sodium.cryptoSignVerifyDetached(sig, payload, spk)) return null
+        if (sodium.crypto_sign_verify_detached(sig, payload, payload.size.toLong(), spk) != 0) return null
         if (trustedSigningKey != null && !spk.contentEquals(trustedSigningKey)) return null
         val relay = String(payload, 88)
         return Invite(
