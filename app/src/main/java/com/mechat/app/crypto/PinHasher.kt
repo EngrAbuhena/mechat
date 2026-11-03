@@ -4,6 +4,7 @@ import com.goterl.lazysodium.SodiumAndroid
 import com.goterl.lazysodium.interfaces.PwHash
 import com.sun.jna.NativeLong
 import java.security.MessageDigest
+import javax.inject.Inject
 import java.security.SecureRandom
 
 /**
@@ -11,7 +12,7 @@ import java.security.SecureRandom
  * Random per-install salt; only hash + salt + parameters are stored.
  * Verification uses a constant-time comparison.
  */
-class PinHasher(private val sodium: SodiumAndroid = SodiumAndroid()) {
+class PinHasher @Inject constructor(private val sodium: SodiumAndroid = SodiumAndroid()) {
 
     companion object {
         const val HASH_BYTES = 32
