@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.mechat.app.di.CryptoEntryPoint
-import dagger.hilt.EntryPointAccessors
+import dagger.hilt.android.EntryPointAccessors
 import com.mechat.app.ui.components.GlassCard
 import com.mechat.app.ui.components.GradientBackground
 import com.mechat.app.ui.components.ListItem

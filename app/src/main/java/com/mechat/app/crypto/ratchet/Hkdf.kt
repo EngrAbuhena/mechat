@@ -36,6 +36,6 @@ object Hkdf {
         return out
     }
 
-    fun derive(salt: ByteArray, ikm: ByteArray, info: ByteArray, length: Int = 32) =
+    fun derive(salt: ByteArray, ikm: ByteArray, info: ByteArray = ByteArray(0), length: Int = 32) =
         expand(extract(salt, ikm), info, length)
 }

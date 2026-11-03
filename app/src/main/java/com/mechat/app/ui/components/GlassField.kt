@@ -51,7 +51,6 @@ fun GlassField(
             focusedTextColor = tokens.textPrimary,
             unfocusedTextColor = tokens.textPrimary,
         ),
-        border = BorderStroke(Sizes.borderThin, tokens.glassBorder),
     )
 }
 

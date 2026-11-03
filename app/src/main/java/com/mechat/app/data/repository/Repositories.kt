@@ -23,7 +23,7 @@ class ContactRepository @Inject constructor(private val dao: ContactDao) {
 
 @Singleton
 class ConversationRepository @Inject constructor(private val dao: ConversationDao) {
-    fun observeAll(): Flow<List<Conversation>> = dao.observeAll()
+    fun observeAll(): Flow<List<Conversation>> = dao.observeAll()\n    suspend fun clearUnread(id: String) = dao.clearUnread(id)\n    suspend fun bumpUnread(id: String, now: Long) = dao.bumpUnread(id, now)
     suspend fun upsert(conversation: Conversation) = dao.upsert(conversation)
 }
 

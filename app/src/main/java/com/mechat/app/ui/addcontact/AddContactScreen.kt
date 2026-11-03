@@ -33,7 +33,7 @@ import com.mechat.app.ui.components.RoundIconButton
 import com.mechat.app.ui.theme.LocalMeChatTokens
 import com.mechat.app.ui.theme.MeChatTheme
 import com.mechat.app.ui.theme.Spacing
-import dagger.hilt.EntryPointAccessors
+import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun AddContactScreen(

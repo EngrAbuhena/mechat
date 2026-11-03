@@ -25,7 +25,7 @@ import com.mechat.app.ui.lock.Keypad
 import com.mechat.app.ui.theme.LocalMeChatTokens
 import com.mechat.app.ui.theme.MeChatTheme
 import com.mechat.app.ui.theme.Spacing
-import dagger.hilt.EntryPointAccessors
+import dagger.hilt.android.EntryPointAccessors
 
 /** PIN setup (6–12 digits) during onboarding. PIN-only, no biometrics by design. */
 @Composable

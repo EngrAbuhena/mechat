@@ -13,15 +13,13 @@ import com.goterl.lazysodium.utils.KeyPair
 class IdentityKeys(private val sodium: SodiumAndroid = SodiumAndroid()) {
 
     init {
-        // Loads the bundled native libsodium library.
-        com.goterl.lazysodium.utils.LibraryLoader.loadSharedLibraryIfNeeded()
     }
 
     /** Ed25519 signing key pair (64-byte secret key, 32-byte public key). */
-    fun generateSigningKeyPair(): KeyPair = sodium.cryptoSignKeyPair()
+    fun generateSigningKeyPair(): KeyPair = sodium.cryptoSignKeypair()
 
     /** X25519 key pair for key agreement (crypto_box / X3DH-style). */
-    fun generateKeyAgreementKeyPair(): KeyPair = sodium.cryptoBoxKeyPair()
+    fun generateKeyAgreementKeyPair(): KeyPair = sodium.cryptoBoxKeypair()
 
     /** Public identity ID: base64url(SHA-256(signing public key)), no padding. */
     fun publicIdFrom(signingPublicKey: ByteArray): String {

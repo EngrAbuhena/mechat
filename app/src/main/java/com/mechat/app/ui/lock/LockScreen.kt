@@ -30,7 +30,7 @@ import com.mechat.app.ui.theme.LocalMeChatTokens
 import com.mechat.app.ui.theme.MeChatTheme
 import com.mechat.app.ui.theme.Sizes
 import com.mechat.app.ui.theme.Spacing
-import dagger.hilt.EntryPointAccessors
+import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun LockScreen(onUnlock: () -> Unit) {

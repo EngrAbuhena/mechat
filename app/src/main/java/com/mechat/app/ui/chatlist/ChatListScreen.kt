@@ -53,7 +53,7 @@ private val PlaceholderConversations = listOf(
 fun ChatListScreen(
     onConversationClick: (String) -> Unit,
     onAddClick: () -> Unit,
-    onSettingsClick: () -> Unit,
+    onContactsClick: () -> Unit,\n    onSettingsClick: () -> Unit,
 ) {
     val tokens = LocalMeChatTokens.current
 

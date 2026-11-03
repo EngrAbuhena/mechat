@@ -15,7 +15,7 @@ import java.security.SecureRandom
  *   shared = HKDF( x25519(ourIdentityPriv, theirSpk) || x25519(ourRatchetPriv, theirSpk) || x25519(ourIdentityPriv, theirKx) )
  */
 class DoubleRatchet(
-    private val sodium: Sodium = SodiumAndroid(),
+    private val sodium: com.goterl.lazysodium.LazySodium = SodiumAndroid(),
 ) {
     companion object {
         const val VERSION: Byte = 1
@@ -63,9 +63,9 @@ class DoubleRatchet(
         identityPub = ourIdentityPub
         theirSpk = theirSigningPub
         theirKx = theirKeyAgreementPub
-        val dh1 = dh(ourIdentityPriv, theirSpk)
-        val dh2 = dh(ratchetPriv, theirSpk)
-        val dh3 = dh(ourIdentityPriv, theirKx)
+        val dh1 = dh(ourIdentityPriv, theirSpk!!)
+        val dh2 = dh(ratchetPriv, theirSpk!!)
+        val dh3 = dh(ourIdentityPriv, theirKx!!)
         rootKey = Hkdf.derive(ByteArray(32), dh1 + dh2 + dh3, "mechat-root".toByteArray())
         // Alice side: derive initial send chain.
         val (rk, ck) = hkdfRk(rootKey, dh(ratchetPriv, theirKx!!))
@@ -82,9 +82,9 @@ class DoubleRatchet(
         identityPub = ourIdentityPub
         theirSpk = theirSigningPub
         theirKx = theirKeyAgreementPub
-        val dh1 = dh(ourIdentityPriv, theirSpk)
-        val dh2 = dh(ratchetPriv, theirSpk)
-        val dh3 = dh(ourIdentityPriv, theirKx)
+        val dh1 = dh(ourIdentityPriv, theirSpk!!)
+        val dh2 = dh(ratchetPriv, theirSpk!!)
+        val dh3 = dh(ourIdentityPriv, theirKx!!)
         rootKey = Hkdf.derive(ByteArray(32), dh1 + dh2 + dh3, "mechat-root".toByteArray())
         recvChainKey = Hkdf.derive(rootKey, "mechat-recv-init".toByteArray())
     }

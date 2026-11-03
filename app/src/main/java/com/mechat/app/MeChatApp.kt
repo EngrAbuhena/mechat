@@ -3,7 +3,7 @@ package com.mechat.app
 import android.app.Application
 import com.mechat.app.di.LockEntryPoint
 import com.mechat.app.domain.lock.AppLockLifecycleObserver
-import dagger.hilt.EntryPointAccessors
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.HiltAndroidApp
 
 /**

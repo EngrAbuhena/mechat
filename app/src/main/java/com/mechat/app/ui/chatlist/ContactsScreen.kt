@@ -27,7 +27,7 @@ import com.mechat.app.ui.components.GradientBackground
 import com.mechat.app.ui.components.ListItem
 import com.mechat.app.ui.theme.LocalMeChatTokens
 import com.mechat.app.ui.theme.Spacing
-import dagger.hilt.EntryPointAccessors
+import dagger.hilt.android.EntryPointAccessors
 
 /** Contact list with rename (local nickname), block and delete. */
 @Composable
