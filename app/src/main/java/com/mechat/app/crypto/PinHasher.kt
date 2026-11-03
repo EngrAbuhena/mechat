@@ -28,7 +28,7 @@ class PinHasher(private val sodium: SodiumAndroid = SodiumAndroid()) {
         val salt: ByteArray,
         val opsLimit: Long = OPS_LIMIT,
         val memLimit: Long = MEM_LIMIT,
-        val algorithm: Int = PwHash.ALG_ARGON2ID13,
+        val algorithm: Int = 2,
     )
 
     fun isValidPinLength(pin: String): Boolean =
@@ -40,7 +40,7 @@ class PinHasher(private val sodium: SodiumAndroid = SodiumAndroid()) {
         val hash = ByteArray(HASH_BYTES)
         sodium.crypto_pwhash(
             hash, HASH_BYTES.toLong(), pin.toByteArray(), pin.length.toLong(), salt,
-            OPS_LIMIT, NativeLong(MEM_LIMIT), PwHash.ALG_ARGON2ID13,
+            OPS_LIMIT, NativeLong(MEM_LIMIT), 2,
         )
         return PinHash(hash, salt)
     }
