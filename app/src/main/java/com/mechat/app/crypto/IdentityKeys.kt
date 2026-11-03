@@ -3,8 +3,6 @@ package com.mechat.app.crypto
 import com.goterl.lazysodium.Sodium
 import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.SodiumAndroid
 import com.goterl.lazysodium.utils.KeyPair
 
 /**

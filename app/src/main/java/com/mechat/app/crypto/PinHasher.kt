@@ -3,9 +3,7 @@ package com.mechat.app.crypto
 import com.goterl.lazysodium.Sodium
 import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.interfaces.Pwhash
+import com.goterl.lazysodium.interfaces.PwHash
 import java.security.MessageDigest
 import java.security.SecureRandom
 

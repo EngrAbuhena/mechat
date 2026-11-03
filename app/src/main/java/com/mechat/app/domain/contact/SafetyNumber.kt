@@ -3,8 +3,6 @@ package com.mechat.app.domain.contact
 import com.goterl.lazysodium.Sodium
 import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.SodiumAndroid
-import com.goterl.lazysodium.SodiumAndroid
 
 /**
  * Safety number: SHA-256 of both public keys (sorted), shown as grouped digits
