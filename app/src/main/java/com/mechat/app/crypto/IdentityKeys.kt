@@ -1,8 +1,7 @@
 package com.mechat.app.crypto
 
-import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
+import com.goterl.lazysodium.utils.Key
 import com.goterl.lazysodium.utils.KeyPair
 
 /**
@@ -11,20 +10,28 @@ import com.goterl.lazysodium.utils.KeyPair
  * Private keys live only in memory here; at rest they are wrapped by
  * [KeystoreKeyProvider] and never stored unencrypted (RULE 4).
  */
-class IdentityKeys(private val sodium: LazySodiumAndroid = com.goterl.lazysodium.LazySodiumAndroid(SodiumAndroid())) {
-
-    init {
-    }
+class IdentityKeys(private val sodium: SodiumAndroid = SodiumAndroid()) {
 
     /** Ed25519 signing key pair (64-byte secret key, 32-byte public key). */
-    fun generateSigningKeyPair(): KeyPair = sodium.cryptoSignKeypair()
+    fun generateSigningKeyPair(): KeyPair {
+        val pk = ByteArray(32)
+        val sk = ByteArray(64)
+        sodium.crypto_sign_keypair(pk, sk)
+        return KeyPair(Key(pk), Key(sk))
+    }
 
     /** X25519 key pair for key agreement (crypto_box / X3DH-style). */
-    fun generateKeyAgreementKeyPair(): KeyPair = sodium.cryptoBoxKeypair()
+    fun generateKeyAgreementKeyPair(): KeyPair {
+        val pk = ByteArray(32)
+        val sk = ByteArray(32)
+        sodium.crypto_box_keypair(pk, sk)
+        return KeyPair(Key(pk), Key(sk))
+    }
 
     /** Public identity ID: base64url(SHA-256(signing public key)), no padding. */
     fun publicIdFrom(signingPublicKey: ByteArray): String {
-        val hash = sodium.cryptoHashSha256(signingPublicKey)
+        val hash = ByteArray(32)
+        sodium.crypto_hash_sha256(hash, signingPublicKey, signingPublicKey.size.toLong())
         return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(hash)
     }
 }

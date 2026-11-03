@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.mechat.app.di.CryptoEntryPoint
+import com.mechat.app.di.LockEntryPoint
 import com.mechat.app.domain.lock.AppLockManager
 import com.mechat.app.ui.components.GlassCard
 import com.mechat.app.ui.components.GradientBackground
