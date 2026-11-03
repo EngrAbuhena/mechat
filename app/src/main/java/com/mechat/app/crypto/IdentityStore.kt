@@ -7,7 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import java.util.Base64
+import android.util.Base64
 import javax.inject.Inject
 import javax.inject.Singleton
 

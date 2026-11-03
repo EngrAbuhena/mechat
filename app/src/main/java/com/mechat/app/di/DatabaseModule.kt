@@ -9,7 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import net.zetetic.database.sqlcipher.SupportFactory
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import javax.inject.Singleton
 
 @Module
@@ -27,7 +27,7 @@ object DatabaseModule {
         val rawKey = keyProvider.getOrCreateRawKey()
         return Room.databaseBuilder(context, MeChatDatabase::class.java, "mechat.db")
             .openHelperFactory(SupportOpenHelperFactory(rawKey))
-            .fallbackToDestructiveMigration(true)
+            .fallbackToDestructiveMigration()
             .build()
     }
 

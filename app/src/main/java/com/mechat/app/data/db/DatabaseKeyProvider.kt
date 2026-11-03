@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.security.SecureRandom
-import java.util.Base64
+import android.util.Base64
 import javax.inject.Inject
 import javax.inject.Singleton
 
