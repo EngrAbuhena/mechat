@@ -1,7 +1,5 @@
 package com.mechat.app.domain.contact
 
-import com.goterl.lazysodium.Sodium
-import com.goterl.lazysodium.LazySodiumAndroid
 import com.goterl.lazysodium.SodiumAndroid
 
 /**
@@ -11,11 +9,13 @@ import com.goterl.lazysodium.SodiumAndroid
  */
 object SafetyNumber {
 
-    fun of(ourPublicKey: ByteArray, theirPublicKey: ByteArray, sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid(SodiumAndroid())): String {
+    fun of(ourPublicKey: ByteArray, theirPublicKey: ByteArray, sodium: SodiumAndroid = SodiumAndroid()): String {
         val sorted = listOf(ourPublicKey, theirPublicKey).sortedWith { a, b ->
-            a.compareTo(b)
+            a.toList().compareTo(b.toList())
         }
-        val hash = sodium.cryptoHashSha256(sorted[0] + sorted[1])
+        val input = sorted[0] + sorted[1]
+        val hash = ByteArray(32)
+        sodium.crypto_hash_sha256(hash, input, input.size.toLong())
         val digits = hash.joinToString("") { "%02d".format(it.toInt() and 0xFF) }
         return digits.chunked(5).joinToString(" ")
     }

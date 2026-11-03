@@ -9,7 +9,7 @@ import java.security.SecureRandom
  *  - KDF: HKDF-SHA256 over HMAC-SHA256
  *  - AEAD: XChaCha20-Poly1305 (crypto_aead_xchacha20poly1305_ietf), unique 24-byte nonce per message
  */
-nclass DoubleRatchet(
+class DoubleRatchet(
     private val sodium: SodiumAndroid = SodiumAndroid(),
 ) {
     companion object {
