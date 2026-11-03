@@ -13,14 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Switch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.getValue\nimport androidx.compose.runtime.mutableStateOf\nimport androidx.compose.runtime.remember\nimport androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.mechat.app.di.CryptoEntryPoint
+import com.mechat.app.di.LockEntryPoint
 import dagger.hilt.android.EntryPointAccessors
-import com.mechat.app.ui.components.GlassCard
+import com.mechat.app.ui.components.GlassCard\nimport com.mechat.app.ui.components.GlassField
 import com.mechat.app.ui.components.GradientBackground
 import com.mechat.app.ui.components.ListItem
 import com.mechat.app.ui.theme.LocalMeChatTokens
@@ -39,6 +39,12 @@ private val SettingsItems = listOf(
 @Composable
 fun SettingsScreen(onBack: () -> Unit) {
     val tokens = LocalMeChatTokens.current
+    val context = LocalContext.current
+    val lockManager = remember { EntryPointAccessors.fromApplication(context, LockEntryPoint::class.java).appLockManager() }
+    var showPanicDialog by remember { mutableStateOf(false) }
+    var autoWipe by remember { mutableStateOf(true) }
+    var panicPin by remember { mutableStateOf("") }
+    var panicError by remember { mutableStateOf<String?>(null) }
 
     GradientBackground {
         Box(modifier = Modifier.fillMaxSize()) {

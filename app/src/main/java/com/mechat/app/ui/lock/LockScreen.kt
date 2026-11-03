@@ -38,7 +38,7 @@ fun LockScreen(onUnlock: () -> Unit) {
     val context = LocalContext.current
     val lockManager: AppLockManager = remember {
         EntryPointAccessors.fromApplication(context, LockEntryPoint::class.java).appLockManager()
-        val wiper = EntryPointAccessors.fromApplication(context, LockEntryPoint::class.java).wiper()
+    val wiper = EntryPointAccessors.fromApplication(context, LockEntryPoint::class.java).wiper()
     }
     var pin by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
@@ -124,6 +124,7 @@ fun LockScreen(onUnlock: () -> Unit) {
                 onBackspace = { if (pin.isNotEmpty()) pin = pin.dropLast(1) },
             )
         }
+    val wiper = EntryPointAccessors.fromApplication(context, LockEntryPoint::class.java).wiper()
     }
 }
 

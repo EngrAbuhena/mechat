@@ -28,7 +28,7 @@ object InviteCodec {
     private fun unb64(s: String) = Base64.getUrlDecoder().decode(s)
 
     fun create(
-        sodium: com.goterl.lazysodium.LazySodium = com.goterl.lazysodium.LazySodiumAndroid(SodiumAndroid()),
+        sodium: SodiumAndroid = SodiumAndroid(),
         signingKeyPair: com.goterl.lazysodium.utils.KeyPair,
         keyAgreementPublicKey: ByteArray,
         relayAddress: String,
@@ -63,7 +63,7 @@ object InviteCodec {
     }
 
     /** Decode + verify signature. Returns null if malformed or signature invalid. */
-    fun parse(sodium: Sodium, text: String, trustedSigningKey: ByteArray? = null): Invite? {
+    fun parse(sodium: SodiumAndroid, text: String, trustedSigningKey: ByteArray? = null): Invite? {
         val parts = text.trim().split(".")
         if (parts.size != 3 || parts[0] != PREFIX) return null
         val payload = try { unb64(parts[1]) } catch (e: Exception) { return null }

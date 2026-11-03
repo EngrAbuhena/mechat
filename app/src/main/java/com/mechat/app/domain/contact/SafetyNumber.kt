@@ -11,7 +11,7 @@ object SafetyNumber {
 
     fun of(ourPublicKey: ByteArray, theirPublicKey: ByteArray, sodium: SodiumAndroid = SodiumAndroid()): String {
         val sorted = listOf(ourPublicKey, theirPublicKey).sortedWith { a, b ->
-            a.toList().compareTo(b.toList())
+            java.util.Arrays.compareUnsigned(a, b)
         }
         val input = sorted[0] + sorted[1]
         val hash = ByteArray(32)
