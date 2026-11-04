@@ -2,7 +2,7 @@
 # Scans the built APK (dex) for known tracker/analytics packages. RULE 2: no analytics/ads/crash reporting/Firebase.
 set -u
 APK="${1:-app/build/outputs/apk/debug/app-debug.apk}"
-TRACKERS=(com/google/firebase com/google/android/gms com/google/tagmanager analytics crashlytics appsflyer adjust/io com/facebook amplitude mixpanel sentry bugsnag segment branch onesignal urbanairship)
+TRACKERS=(Lcom/google/firebase Lcom/google/android/gms Lcom/google/tagmanager Lcom/facebook Lcom/appsflyer Lio/branch Lcom/amplitude Lcom/mixpanel Lio/sentry Lcom/bugsnag Lcom/segment Lcom/onesignal Lcom/urbanairship Lcom/adjust/sdk Lfirebase/analytics Lcrashlytics)
 fail=0
 [ -f "$APK" ] || { echo "APK not found"; exit 1; }
 for t in "${TRACKERS[@]}"; do
