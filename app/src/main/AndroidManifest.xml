@@ -3,6 +3,7 @@
 
     <!-- CAMERA is requested at runtime ONLY when the user taps Scan (RULE 2). -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <!-- INTERNET for wss:// relay only; cleartext is blocked by network_security_config. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
