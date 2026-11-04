@@ -10,7 +10,7 @@ import java.security.SecureRandom
  *  - AEAD: XChaCha20-Poly1305 (crypto_aead_xchacha20poly1305_ietf), unique 24-byte nonce per message
  */
 class DoubleRatchet(
-    private val sodium: SodiumAndroid = SodiumAndroid(),
+    private val sodium: com.goterl.lazysodium.Sodium = SodiumAndroid(),
 ) {
     companion object {
         const val VERSION: Byte = 1

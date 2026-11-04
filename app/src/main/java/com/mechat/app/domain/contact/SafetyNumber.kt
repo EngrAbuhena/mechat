@@ -9,7 +9,7 @@ import com.goterl.lazysodium.SodiumAndroid
  */
 object SafetyNumber {
 
-    fun of(ourPublicKey: ByteArray, theirPublicKey: ByteArray, sodium: SodiumAndroid = SodiumAndroid()): String {
+    fun of(ourPublicKey: ByteArray, theirPublicKey: ByteArray, sodium: com.goterl.lazysodium.Sodium = SodiumAndroid()): String {
         val sorted = listOf(ourPublicKey, theirPublicKey).sortedWith { a, b ->
             java.util.Arrays.compareUnsigned(a, b)
         }
