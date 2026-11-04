@@ -1,5 +1,6 @@
 package com.mechat.app.di
 
+import com.goterl.lazysodium.Sodium
 import com.goterl.lazysodium.SodiumAndroid
 import com.mechat.app.crypto.IdentityKeys
 import com.mechat.app.crypto.KeystoreKeyProvider
@@ -15,11 +16,11 @@ object CryptoModule {
 
     @Provides
     @Singleton
-    fun provideSodium(): SodiumAndroid = SodiumAndroid()
+    fun provideSodium(): Sodium = SodiumAndroid()
 
     @Provides
     @Singleton
-    fun provideIdentityKeys(sodium: SodiumAndroid): IdentityKeys = IdentityKeys(sodium)
+    fun provideIdentityKeys(sodium: Sodium): IdentityKeys = IdentityKeys(sodium)
 
     @Provides
     @Singleton
